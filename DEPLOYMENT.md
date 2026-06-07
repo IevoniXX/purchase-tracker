@@ -25,15 +25,15 @@ Below are three options. All have free tiers sufficient for this app.
 
 ### Option A: Railway (recommended for beginners)
 
-Railway auto-detects Docker Compose and deploys both services.
+The repo has a root `Dockerfile` that builds both frontend and backend into a single container (FastAPI serves the React build). Railway auto-detects this Dockerfile. Your local docker-compose setup is unaffected.
 
 1. Go to https://railway.app and sign in with GitHub
 2. Click "New Project" → "Deploy from GitHub Repo"
 3. Select your `purchase-tracker` repo
-4. Railway detects `docker-compose.yml` and creates both services
-5. For the **frontend** service, add a public domain (Settings → Networking → Generate Domain)
-6. For the **backend** service, ensure port 8000 is exposed internally (no public domain needed — nginx proxies to it)
-7. For data persistence: Railway provides a volume — attach it to the backend service at `/app/data`
+4. Railway detects the root `Dockerfile` and deploys a single service
+5. Add a public domain (Settings → Networking → Generate Domain)
+6. Set the `PORT` environment variable to `8000` if Railway doesn't auto-detect it
+7. For data persistence: attach a Railway volume at `/app/data`
 
 **Important:** Railway's free trial gives you $5 of usage. After that, the Hobby plan is $5/month. For a small app like this, you'll likely stay well under $5/month.
 

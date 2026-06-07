@@ -1,4 +1,9 @@
+import os
+from pathlib import Path
+
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from database import engine, Base, get_db
@@ -8,6 +13,8 @@ from schemas import ItemCreate, ItemUpdate, ItemResponse
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+STATIC_DIR = Path(__file__).parent / "static"
 
 SEED_DATA = [
     {
@@ -116,3 +123,14 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Item not found")
     db.delete(db_item)
     db.commit()
+
+
+if STATIC_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=STATIC_DIR / "assets"), name="assets")
+
+    @app.get("/{path:path}")
+    def spa_fallback(path: str):
+        file = STATIC_DIR / path
+        if file.is_file():
+            return FileResponse(file)
+        return FileResponse(STATIC_DIR / "index.html")
