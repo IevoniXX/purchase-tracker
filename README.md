@@ -2,6 +2,8 @@
 
 A family webapp for managing online purchases through their lifecycle: wish list, ordered, in transit, pick up from post office, delivered. Built for two users to align on what to buy and track where everything is.
 
+**Live:** https://purchase-tracker-production.up.railway.app/
+
 ## Tech Stack
 
 - **Frontend:** React 19 + Vite, served by nginx
